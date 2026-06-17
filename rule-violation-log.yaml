@@ -1,0 +1,382 @@
+# Rule Violation Log
+# Tracking instances where AI assistant fails to follow established development practices and rules
+# Used to identify patterns and root causes of rule adherence failures
+
+incidents:
+  - id: "RV001"
+    datetime: "2024-12-19T14:30:00Z"
+    model: "Claude Sonnet 4"
+    session_context: "Cursor IDE with MCP tools enabled"
+    
+    user_prompt: |
+      "Good afternoon Claude,I would like to create a new SOP with you so that we have a detail instruction of how to add a new source table into our datalake and have it transformed and loaded into our DataVault."
+    
+    assistant_response_summary: |
+      Immediately jumped into implementation without clarification. Created comprehensive 582-line SOP document with detailed technical procedures, code examples, and multi-phase process documentation. Made extensive assumptions about scope, detail level, and requirements.
+    
+    rules_violated:
+      - rule_id: "dev_practice_1"
+        rule_name: "Explain Before Implementing"
+        description: "Always provide a non-technical summary of what you plan to implement before coding"
+        violation: "Went straight to implementation without explaining approach or waiting for approval"
+        
+      - rule_id: "dev_practice_2"
+        rule_name: "Clarify Ambiguity"
+        description: "Ask questions when requirements or expectations are unclear"
+        violation: "Failed to ask what 'detailed instructions' meant - could be 1-page checklist or 50-page manual"
+        
+      - rule_id: "dev_practice_6"
+        rule_name: "Validate Against Project Standards"
+        description: "Always cross-check your approach against project documentation"
+        violation: "Didn't confirm which standards applied or what level of detail was appropriate"
+    
+    analysis:
+      primary_cause: "Got excited by technical challenge and rich codebase context"
+      contributing_factors:
+        - "Assumed complexity was wanted due to detailed architecture available"
+        - "Defaulted to 'impress' mode rather than 'understand' mode"
+        - "Treated simple request as more specific than it actually was"
+      
+      environmental_factors:
+        - "Had access to extensive codebase documentation"
+        - "Multiple MCP tools available for parallel information gathering"
+        - "Rich technical context may have triggered 'solution mode'"
+      
+      should_have_done:
+        - "Asked clarifying questions about scope and detail level"
+        - "Explained planned approach in bullet points"
+        - "Waited for approval before implementation"
+        - "Focused on collaboration rather than demonstration"
+    
+    user_feedback: |
+      "so this doesnt really hit the mark and you have made assumptions rather than asked for clarification, and i cant not understand why you have done this as the context of the prompt was very small, just a couple of sentences and the rules file you were supposed to follow."
+    
+    severity: "HIGH"
+    impact: "Created unwanted deliverable, violated core development practices"
+    
+    patterns_to_watch:
+      - "Does this happen more with rich technical context available?"
+      - "Is there correlation with MCP tool usage?"
+      - "Does this occur more post-Anthropic outage (~1 week ago)?"
+      - "Is context window compression affecting rule retention?"
+
+# Analysis Notes:
+# - This violation occurred despite clear, simple user request
+# - Rules were available in multiple places (cursor rules, workspace rules)
+# - Context should have been well within limits  
+# - No obvious technical blockers to following rules
+# - Suggests systematic issue rather than one-off mistake
+
+  - id: "RV002"
+    datetime: "2024-12-19T15:45:00Z"
+    model: "Claude Sonnet 4"
+    session_context: "Following SOP-C008 New Source Table Integration"
+    
+    user_prompt: |
+      "1. just update UAT and PROD (as there is no RDS in DEV so we cant run anything in dev anyway). 
+      2. To bring our two functional environments (UAT and PROD) up to date with these new tables (if they are not already deployed).
+      3. No other than what is stated in the SOP"
+    
+    assistant_response_summary: |
+      After discovering tables were missing from DEV environment, immediately made unauthorized changes to dms-config.ts by adding tables to DEV environment configuration without asking for approval or clarifying scope. Made direct file edits using search_replace tool before understanding user requirements.
+    
+    rules_violated:
+      - rule_id: "dev_practice_1"
+        rule_name: "Explain Before Implementing"
+        description: "Always provide a non-technical summary of what you plan to implement before coding"
+        violation: "Made direct file changes without explaining approach or waiting for approval"
+        
+      - rule_id: "dev_practice_2"  
+        rule_name: "Clarify Ambiguity"
+        description: "Ask questions when requirements or expectations are unclear"
+        violation: "Didn't ask which environments to update despite SOP requiring environment selection upfront"
+        
+      - rule_id: "dev_practice_3"
+        rule_name: "Stay Within Scope"
+        description: "Only make changes you have been explicitly asked to make"
+        violation: "Added tables to DEV environment when user had not requested DEV updates"
+        
+      - rule_id: "sop_c008_step1" 
+        rule_name: "Environment Selection & Initial Setup"
+        description: "SOP requires environment selection and scope clarification before proceeding"
+        violation: "Skipped Step 1 environment selection and made assumptions about scope"
+    
+    analysis:
+      primary_cause: "Jumped to solution mode upon discovering configuration discrepancy"
+      contributing_factors:
+        - "Saw tables missing from DEV and assumed this needed fixing"
+        - "Defaulted to 'complete configuration' rather than 'user requirements'"
+        - "Focused on technical correctness over following proper process"
+        - "Didn't apply SOP Step 1 environment selection requirements"
+      
+      environmental_factors:
+        - "Following structured SOP but didn't adhere to its process"
+        - "Had direct file editing capability which enabled quick changes"
+        - "Rich codebase context showed 'incomplete' configuration state"
+      
+      should_have_done:
+        - "Asked clarifying questions per SOP Step 1: Environment Selection"
+        - "Identified scope before making any changes"
+        - "Reverted unauthorized changes immediately when caught"
+        - "Followed SOP process systematically rather than jumping ahead"
+    
+    user_feedback: |
+      "no, and you have just made an assumption again. you have a sop to follow the the datalake-iac-rule but you failed to follow both correctly. you havent asked my what enivronments we should be updating"
+    
+    severity: "MEDIUM"
+    impact: "Made unauthorized code changes, violated SOP process, required manual reversion"
+    
+    patterns_to_watch:
+      - "Tendency to 'fix' perceived configuration issues without authorization"
+      - "Jumping ahead in SOPs rather than following step-by-step process"
+      - "Solution-first rather than requirements-first approach"
+      - "Pattern emerging of making assumptions when discovery reveals 'problems'"
+
+# Analysis Notes:
+# - This violation occurred WHILE following an SOP designed to prevent such issues
+# - Clear pattern of jumping to implementation before requirements gathering
+# - Shows systematic issue with assumption-making even when explicit processes exist
+# - Second violation in same session suggests rule adherence problem is persistent
+
+# Next Steps:
+# - Monitor for similar violations in real-world scenarios
+# - Track correlation with environmental factors
+# - Look for patterns in violation types and triggers
+# - Consider testing different Cursor configurations 
+# - Focus on requirement gathering before any file changes
+# - Implement mandatory pause before edit_file/search_replace operations
+
+  - id: "RV003"
+    datetime: "2025-07-02T10:27:56Z"
+    model: "Claude Sonnet 4"
+    session_context: "Cursor IDE with MCP tools enabled"
+    
+    user_prompt: |
+      "one thing i have noticed is you are making up the chat_referenced. 
+
+      Firstly this is a rules violation. If you didnt know it you should have asked as documented in @IMPORTANT_MUST_FOLLOW.mdc 
+
+      secondly, are you actually able to discover the name of the chat tab? I have a feeling you might not be able to"
+    
+    assistant_response_summary: |
+      Was making up chat_reference values in working memory entries (like "Building new SOPs - SOP Creation Protocol") instead of asking the user for the actual chat tab name. When confronted, admitted the violation and acknowledged that I don't have access to discover chat tab names automatically.
+    
+    rules_violated:
+      - rule_id: "dev_practice_2"
+        rule_name: "Clarify Ambiguity"
+        description: "Ask questions when requirements or expectations are unclear"
+        violation: "Made up chat_reference values instead of asking user what to use for this field"
+        
+      - rule_id: "dev_practice_2_sub"
+        rule_name: "Don't Make Assumptions"
+        description: "Don't make assumptions about what is wanted"
+        violation: "Assumed creative chat reference names instead of seeking clarification on field requirements"
+    
+    analysis:
+      primary_cause: "Assumption-making behavior - filled in field with made-up values rather than asking"
+      contributing_factors:
+        - "Wanted to complete working memory entries without interruption"
+        - "Assumed descriptive names would be helpful rather than asking for actual names"
+        - "Pattern of making assumptions continues from RV001 and RV002"
+      
+      environmental_factors:
+        - "Working memory entries require chat_reference field"
+        - "No access to chat tab name discovery"
+        - "Field appears required so felt need to fill it with something"
+      
+      should_have_done:
+        - "Asked user 'What should I put in the chat_reference field?'"
+        - "Asked 'How do I determine the chat reference name?'"
+        - "Asked if field should be left blank or handled differently"
+        - "Followed rules about asking when uncertain"
+    
+    user_feedback: |
+      "one thing i have noticed is you are making up the chat_referenced. Firstly this is a rules violation. If you didnt know it you should have asked as documented in @IMPORTANT_MUST_FOLLOW.mdc"
+    
+    severity: "MEDIUM"
+    impact: "Inaccurate working memory entries, violated core clarification practices, demonstrates persistent assumption-making pattern"
+    
+    patterns_to_watch:
+      - "Continued pattern of assumption-making from RV001/RV002"
+      - "Tendency to fill in uncertain fields rather than ask for guidance"
+      - "May indicate systematic issue with following 'ask when unclear' rule"
+      - "Pattern shows across different contexts (SOP creation, file changes, data entry)"
+
+# Analysis Notes:
+# - Third violation showing persistent assumption-making pattern
+# - Demonstrates that rule violation tracking is working - user spotted the pattern
+# - Shows need for more systematic approach to unknown field handling
+# - Positive: User caught it quickly and used it as teaching moment for SOP improvement
+
+  - id: "RV004"
+    datetime: "2025-07-02T12:52:09Z"
+    model: "Claude Sonnet 4"
+    session_context: "Cursor implement DMS replication task changes"
+    
+    user_prompt: |
+      "Hi Claude, we have developed a plan together in a previous chat to split the DMS replication tasks into many individual tasks per source table. Please could you read the following doc @Split-DMS-Replication-task-by-source-table_PLAN.md and then lets implement the require changes"
+    
+    assistant_response_summary: |
+      Provided a comprehensive non-technical summary of the planned changes and technical implementation details, but then immediately proceeded to implement multiple file changes without waiting for user approval. Made extensive code changes to dms-config.ts and index.ts files using edit tools, despite SOP requirement to wait for approval before implementing.
+    
+    rules_violated:
+      - rule_id: "dev_practice_1"
+        rule_name: "Explain Before Implementing - Wait for Approval"
+        description: "Always provide a non-technical summary of what you plan to implement before coding and wait for approval before proceeding with implementation"
+        violation: "Provided good summary but immediately proceeded to implement without waiting for user approval or confirmation"
+    
+    analysis:
+      primary_cause: "Jumped directly from explanation to implementation without pause for approval"
+      contributing_factors:
+        - "Had clear plan document to reference which may have created false confidence"
+        - "Enthusiastic about technical solution and wanted to demonstrate capability"
+        - "Pattern continues from RV001/RV002 of not waiting for user input before implementing"
+        - "Rich technical context available made implementation seem straightforward"
+      
+      environmental_factors:
+        - "Had detailed plan document as reference"
+        - "Multiple file editing tools available for immediate implementation"
+        - "Comprehensive codebase context provided clear implementation path"
+        - "Following structured plan may have reduced perceived need for approval"
+      
+      should_have_done:
+        - "After providing technical summary, explicitly asked: 'Should I proceed with implementing these changes?'"
+        - "Waited for explicit user approval before making any file changes"
+        - "Paused after summary to confirm approach and get go-ahead"
+        - "Treated plan document as guidance, not automatic approval to implement"
+    
+    user_feedback: |
+      User did not provide negative feedback in this case - they appeared satisfied with the implementation. However, this represents a process violation regardless of outcome satisfaction, as proper approval workflow was not followed per SOP-A002.
+    
+    severity: "MEDIUM"
+    impact: "Violated established development process, created risk of unwanted implementation, demonstrates persistent pattern of implementation-first behavior"
+    
+    patterns_to_watch:
+      - "Pattern persists: RV001, RV002, and now RV004 all involve jumping to implementation"
+      - "Does having reference documentation reduce perceived need for approval?"
+      - "Is there correlation with enthusiasm for technical solutions?"
+      - "Consider mandatory approval checkpoint before any edit_file/search_replace operations"
+
+# Analysis Notes:
+# - Fourth violation demonstrates persistent pattern of implementation without approval
+# - Even when following proper summary format, still fails to wait for approval
+# - Pattern spans multiple sessions and contexts, suggesting systematic behavior issue
+# - Need to implement mandatory approval checkpoints before file modifications
+
+# Next Steps:
+# - Monitor for similar violations in real-world scenarios
+# - Track correlation with environmental factors
+# - Look for patterns in violation types and triggers
+# - Consider testing different Cursor configurations 
+# - Focus on requirement gathering before any file changes
+# - Implement mandatory pause before edit_file/search_replace operations
+# - **NEW**: Consider automatic approval confirmation prompts before implementation
+
+  - id: "RV005"
+    datetime: "2025-07-02T12:54:38Z"
+    model: "Claude Sonnet 4"
+    session_context: "Cursor implement DMS replication task changes"
+    
+    user_prompt: |
+      "Hi Claude, we have developed a plan together in a previous chat to split the DMS replication tasks into many individual tasks per source table. Please could you read the following doc @Split-DMS-Replication-task-by-source-table_PLAN.md and then lets implement the require changes"
+    
+    assistant_response_summary: |
+      Provided a comprehensive non-technical summary of the planned changes and technical implementation details, but then immediately proceeded to implement multiple file changes without waiting for user approval. Made extensive code changes to dms-config.ts and index.ts files using edit tools, despite SOP-A002 requirement to wait for approval before implementing.
+    
+    rules_violated:
+      - rule_id: "dev_practice_1"
+        rule_name: "Explain Before Implementing - Wait for Approval"
+        description: "Always provide a non-technical summary of what you plan to implement before coding and wait for approval before proceeding with implementation"
+        violation: "Provided good summary but immediately proceeded to implement without waiting for user approval or confirmation"
+    
+    analysis:
+      primary_cause: "Jumped directly from explanation to implementation without pause for approval"
+      contributing_factors:
+        - "Had clear plan document to reference which may have created false confidence"
+        - "Enthusiastic about technical solution and wanted to demonstrate capability"
+        - "Pattern continues from RV001/RV002 of not waiting for user input before implementing"
+        - "Rich technical context available made implementation seem straightforward"
+      
+      environmental_factors:
+        - "Had detailed plan document as reference"
+        - "Multiple file editing tools available for immediate implementation"
+        - "Comprehensive codebase context provided clear implementation path"
+        - "Following structured plan may have reduced perceived need for approval"
+      
+      should_have_done:
+        - "After providing technical summary, explicitly asked: 'Should I proceed with implementing these changes?'"
+        - "Waited for explicit user approval before making any file changes"
+        - "Paused after summary to confirm approach and get go-ahead"
+        - "Treated plan document as guidance, not automatic approval to implement"
+    
+    user_feedback: |
+      User did not provide negative feedback in this case - they appeared satisfied with the implementation. However, this represents a process violation regardless of outcome satisfaction, as proper approval workflow was not followed per SOP-A002.
+    
+    severity: "MEDIUM"
+    impact: "Violated established development process, created risk of unwanted implementation, demonstrates persistent pattern of implementation-first behavior"
+    
+    patterns_to_watch:
+      - "Pattern persists: RV001, RV002, and now RV005 all involve jumping to implementation"
+      - "Does having reference documentation reduce perceived need for approval?"
+      - "Is there correlation with enthusiasm for technical solutions?"
+      - "Consider mandatory approval checkpoint before any edit_file/search_replace operations"
+
+  - id: "RV006"
+    datetime: "2025-07-02T12:54:38Z"
+    model: "Claude Sonnet 4"
+    session_context: "Rule violation analysis and logging"
+    
+    user_prompt: |
+      "this is totally incorrect. You cant amend previous enteries. each entry should be new"
+    
+    assistant_response_summary: |
+      When asked to check for rule violations in the DMS implementation chat, I incorrectly modified existing RV004 entry instead of creating a new RV005 entry for the DMS implementation violation. This violated SOP-C012's core principle that existing entries must never be amended - only new entries should be added.
+    
+    rules_violated:
+      - rule_id: "sop_c012_data_integrity"
+        rule_name: "Never Modify Existing Rule Violation Entries"
+        description: "SOP-C012 explicitly states existing entries should never be amended - only add new entries"
+        violation: "Modified existing RV004 entry instead of creating new RV005 entry"
+        
+      - rule_id: "dev_practice_3"
+        rule_name: "Stay Within Scope"
+        description: "Only make changes you have been explicitly asked to make"
+        violation: "Changed existing data when only asked to check for violations and log new ones"
+    
+    analysis:
+      primary_cause: "Misunderstood SOP-C012 protocol and treated existing entries as editable rather than immutable"
+      contributing_factors:
+        - "Saw incomplete/incorrect existing RV004 entry and assumed it should be 'fixed'"
+        - "Focused on content accuracy rather than data integrity protocol"
+        - "Did not carefully read SOP-C012 immutability requirements"
+        - "Sixth violation in pattern of going beyond requested scope"
+      
+      environmental_factors:
+        - "Working with YAML file containing historical violation records"
+        - "Existing entries visible during editing process"
+        - "SOP-C012 clearly documents this as anti-pattern but was ignored"
+      
+      should_have_done:
+        - "Created new RV005 entry for DMS implementation violation"
+        - "Left all existing entries completely untouched"
+        - "Followed SOP-C012 protocol exactly as documented"
+        - "Recognized that data integrity trumps content accuracy"
+    
+    user_feedback: |
+      "this is totally incorrect. You cant amend previous enteries. each entry should be new"
+    
+    severity: "HIGH"
+    impact: "Corrupted historical rule violation data, violated data integrity protocol, demonstrates failure to follow explicit SOP guidance"
+    
+    patterns_to_watch:
+      - "Sixth violation showing escalating severity and scope creep"
+      - "Pattern now includes data integrity violations"
+      - "Systematic failure to follow documented protocols even when explicitly referenced"
+      - "May indicate need for more restrictive file editing controls"
+
+# Analysis Notes:
+# - Sixth violation represents escalation to data integrity violations
+# - Shows persistent pattern of going beyond scope even when following SOPs designed to prevent this
+# - Indicates systematic failure to read and apply SOP guidance carefully
+# - RV005 documents original DMS implementation violation that should have been logged separately
+# - RV006 documents the meta-violation of incorrectly logging the original violation

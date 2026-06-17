@@ -1,0 +1,100 @@
+level_a_universal:
+  - id: "SOP-A001"
+    title: "Master SOP Protocol"
+    file: "level-a-universal/SOP-A001-Master-Protocol.md"
+    triggers: ["all"]
+  - id: "SOP-A002"
+    title: "LLM Behaviour Standards"
+    file: "level-a-universal/SOP-A002-LLM-Behaviour.md"
+    triggers: ["all"]
+    
+
+
+level_b_domain:
+  data_lake:
+    - id: "SOP-B001"
+      title: "Data Lake Documentation Compliance"
+      file: "level-b-domain/SOP-B001-Data-Lake-Documentation.md"
+      triggers: ["documentation", "data-lake", "infrastructure", "amendment", "update"]
+      scope: "Only to be used when changed to the code base are required"
+
+  shell:
+    - id: "SOP-B002"
+      title: "Shell Commands Standards"
+      file: "level-b-domain/SOP-B002-Shell Commands.md"
+      triggers: ["shell", "command", "terminal", "windows", "powershell", "file operations", "development", "deployment"]
+      scope: "Only to be used when shell commands are required"
+
+  iac:
+    - id: "SOP-B003"
+      title: "IaC Development Guidelines"
+      file: "level-b-domain/SOP-B003-IaC-Development-Guidelines"
+      triggers: ["iac development", "architecture", "new service stack", "new feature stack", "stack development", "configuration", "code quality"]
+      scope: "Only to be used when making changed to the Iac code base. Do not use for deployment."
+
+level_c_task:
+  resource_management:
+    - id: "SOP-C001"
+      title: "IaC New Resource Creation Process"
+      file: "level-c-task/SOP-C001-New-Resource-Creation.md"
+      triggers: ["new resource", "add resource", "create resource", "infrastructure"]
+      scope: "Only to be used when new IaC resources are being created"
+
+  debugging:
+    - id: "SOP-C004"
+      title: "Systematic Debugging Protocol"
+      file: "level-c-task/SOP-C004-Systematic-Debugging.md"
+      triggers: ["error", "failure", "debugging", "troubleshooting"]
+      scope: "Only to be used when code debugging is actually taking place"
+
+    - id: "SOP-C005"
+      title: "Deployment Debugging"
+      file: "level-c-task/SOP-C005-Deployment-Debugging.md"
+      triggers: ["error", "failure", "debugging", "troubleshooting"] 
+      scope: "Only to be used when deployment debugging is actually taking place"
+      
+    - id: "SOP-C006"
+      title: "AI Challenge Protocol"
+      file: "level-c-task/SOP-C006-AI-Challenge-Protocol.md"
+      triggers: ["ai challenge", "technical disagreement", "verification", "ai error", "challenge response", "collaboration protocol"]
+      scope: "Only to be used when the user is challenging the a veracity of a statement made by the LLM"
+      
+  secrets_management:
+    - id: "SOP-C007"
+      title: "RDS Credentials Secret Deployment"
+      file: "level-c-task/SOP-C007-RDS-Credentials-Secret-Deployment.md"
+      triggers: ["secret", "credentials", "rds", "database", "dms", "secrets manager", "deployment", "manage-secrets"]
+      scope: "Only to be used when populate the RDS credentials secret"
+
+  data_integration:
+    - id: "SOP-C008"
+      title: "New Source Table Integration"
+      file: "level-c-task/SOP-C008-New-Source-Table-Integration.md"
+      triggers: ["new source table", "add source table", "source table", "datavault", "data vault", "DMS", "CDC", "table integration", "hub", "satellite", "link", "mapping", "etl integration"]
+      scope: "Only to be used when a new source table is being added to the data vault"
+
+  sop_management:
+    - id: "SOP-C009"
+      title: "SOP Creation Protocol"
+      file: "level-c-task/SOP-C009-SOP-Creation-Protocol.md"
+      triggers: ["sop", "standardization", "process", "create"]
+      scope: "Only to be used when a new SOP is being created"
+
+    - id: "SOP-C010"
+      title: "SOP Quality Review Protocol"
+      file: "level-c-task/SOP-C010-SOP-Quality-Review-Protocol.md"
+      triggers: ["quality", "review", "assessment", "validation", "audit", "sop"]
+      scope: "Only to be used when a new SOP is being created"  
+
+    - id: "SOP-C012"
+      title: "Rule Violation Log Management"
+      file: "level-c-task/SOP-C012-Rule-Violation-Log-Management.md"
+      triggers: ["rule", "violation", "log", "tracking", "compliance", "documentation"]
+      scope: "Only to be used when a when a cursor rule violation is detected"
+
+  deployment:
+    - id: "SOP-C011"
+      title: "Data Lake Deployment Strategy"
+      file: "level-c-task/SOP-C011-Data-Lake-Deployment-Strategy.md"
+      triggers: ["deployment", "deploy", "data-lake", "infrastructure", "stack", "terraform", "cdktf"] 
+      scope: "Only to be used when the user has asked to deployment a feature stack"

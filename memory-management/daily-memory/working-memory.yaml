@@ -1,0 +1,35 @@
+entries:
+  - name: "SOP-C010-testing-required"
+    status: "pending"
+    chat_reference: "Building new SOPs - SOP Quality Review Protocol"
+    datetime: "2025-07-02T09:45:00Z"
+    description: "SOP-C010: SOP Quality Review Protocol requires real-world testing and validation"
+  
+  - name: "deployment-summary-template-created"
+    chat_reference: "deployment summary"
+    datetime: "2025-07-02T11:36:52Z"
+    description: "Created deployment-summary-example.md template showing comprehensive deployment planning format with SOP compliance, risk assessment, and step-by-step execution plan"
+
+  - name: "handoff-process-testing-required"
+    status: "pending"
+    chat_reference: "deployment summary"
+    datetime: "2025-07-02T11:36:52Z"
+    description: "Test handed off process using new LLM instance with blank context and deployment summary output to validate template effectiveness and completeness"
+
+  - name: "DataLake-ETL-Load-Status-prod suffix removal"
+    status: "Completed"
+    chat_reference: "deployment summary"
+    datetime: "2025-07-02T12:06:00Z"
+    description: "✅ Completed: Removed incorrect -prod suffix from table name in deployment summary template. Table name corrected from 'DataLake-ETL-Load-Status-prod' to 'DataLake-ETL-Load-Status' in templates/deployment-summary-example.md"
+
+  - name: "SOP-C012-testing-required"
+    status: "Completed"
+    chat_reference: "Clearing working memory - Rule Violation Log SOP"
+    datetime: "2025-07-02T10:30:00Z"
+    description: "✅ Completed: SOP-C012: Rule Violation Log Management was successfully tested"
+
+  - name: "add-link-table-exists-check-deployment-required"
+    status: "pending"
+    chat_reference: "added-link-table-exists-check-to-CDC-ETL-lambda-CDC-handler_IMPLEMENTED.md"
+    datetime: "2025-01-07T15:00:00Z"
+    description: "Deployment required: CDC ETL Lambda handler enhancements for link table exists check. Implemented check_delta_table_exists() and create_empty_delta_table() functions with proper SOC design. Requires deployment to make active in uat and production environment."

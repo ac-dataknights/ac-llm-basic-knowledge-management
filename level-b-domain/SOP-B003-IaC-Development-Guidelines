@@ -1,0 +1,25 @@
+## Project-Specific Guidelines
+
+### Architecture Compliance
+- Follow the **three-tier architecture pattern**: Base Stack → Service Stack → Feature Stack
+- Service stacks provide **generic, reusable functionality**
+- Feature stacks provide **business-specific orchestration**
+- Never mix service and feature concerns
+
+### Configuration Management
+- Use **loopable object patterns** for scalable configuration
+- Keep business logic in config files, not implementation files
+- Ensure new resources can be added through config changes only
+- Follow established patterns from successful implementations (e.g., storage stack)
+
+### Cross-Stack Integration
+- Use **resource-scoped permissions** rather than broad access
+- Expose resources through clean interfaces
+- Design for environment-agnostic deployment
+- Support multiple environments with same codebase
+
+### Code Quality
+- Write **implementation-focused documentation**
+- Remove unused or dead code
+- Don't create functionality that isn't actually used
+- Verify that proposed solutions actually work with existing systems
