@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: APPLY TO EVERY PROMPT!
+globs:
+  - "**/*"
+alwaysApply: true
+---
+Before starting any task, you MUST:
+
+1. **Read the Master SOP**: `Custom-Cursor-Management/level-a-universal/SOP-A001-Master-Protocol.md`
+2. **Follow the Master SOP instructions to the LETTER**
+3. **Apply all applicable SOPs** throughout the task execution
+
+This rule applies to ALL work - no exceptions.
+
+
+
+
+
